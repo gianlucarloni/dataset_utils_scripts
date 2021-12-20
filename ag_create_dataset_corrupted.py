@@ -40,7 +40,7 @@ is_patch = args.patch
 is_histeq = args.histeq 
 
 if not os.path.exists(corrupted_png_dir):
-    os.mkdir(corrupted_png_dir)
+    os.makedirs(corrupted_png_dir)
     print('Corrupted png dir, created')
     
 #%% Caricamento immagini originali da cartella PNG T2
