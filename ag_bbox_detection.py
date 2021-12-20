@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Dec 20 15:59:53 2021
+
+DETECTION AUTOMATICA DELLA BOUNDING BOX PER CROPPARE LE IMMAGINI
+MAMMOGRAFICHE SULLA MAMMELLA ESCLUDENDO IL FONDO ARIA
+
+@author: si-lab
+"""
+
