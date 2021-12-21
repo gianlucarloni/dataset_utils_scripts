@@ -26,18 +26,6 @@ IMG_SIZE = 2294
 
 
 
-# load CSV spreadsheet for labels
-path_to_csv='/media/si-lab/63bc1baf-d08c-4db5-b271-e462f3f4444d/a_e_g/datasets/breast_CMMD/CMMD_clinicaldata_revision_ag.csv'
-csv = pandas.read_csv(path_to_csv,index_col='ID1')
-
-patients_names = list(set(csv.index))
-patients_names.sort()
-
-
-filename_CC = list()
-filename_MLO = list()
-label_CC = list()
-label_MLO = list()
 
 def crop_center(img, cropx, cropy):
     x, y = img.shape
@@ -58,6 +46,22 @@ if __name__ == "__main__":
     cropped_dim = args.cropped_dim
     print('Assumption: square medical images')
     print(f'La dimensione dell\'immagine iniziale è settata a: {IMG_SIZE}')
+    
+    
+    # load CSV spreadsheet for labels
+    path_to_csv='/media/si-lab/63bc1baf-d08c-4db5-b271-e462f3f4444d/a_e_g/datasets/breast_CMMD/CMMD_clinicaldata_revision_ag.csv'
+    csv = pandas.read_csv(path_to_csv,index_col='ID1')
+    
+    patients_names = list(set(csv.index))
+    patients_names.sort()
+    
+    
+    filename_CC = list()
+    filename_MLO = list()
+    label_CC = list()
+    label_MLO = list()
+    laterality_CC = list()
+    laterality_MLO = list()
     
     if cropped_dim is not None:
         print(f'La dimensione dell\'immagine finale sarà: {cropped_dim}')
@@ -123,13 +127,15 @@ if __name__ == "__main__":
             if patient_orientation == 'MLO':
                 filename_MLO.append(final_name)
                 label_MLO.append(class_label)
+                laterality_MLO.append(temp1)
             else:
                 filename_CC.append(final_name)
                 label_CC.append(class_label)
+                laterality_CC.append(temp1)
             b.save(os.path.join(png_dir,patient_orientation, final_name), 'PNG')
     
-    out_CC_df = pandas.DataFrame(data={'File name': filename_CC, 'Label': label_CC})
-    out_MLO_df = pandas.DataFrame(data={'File name': filename_MLO, 'Label': label_MLO})
+    out_CC_df = pandas.DataFrame(data={'File name': filename_CC, 'LeftRight': laterality_CC, 'Label': label_CC})
+    out_MLO_df = pandas.DataFrame(data={'File name': filename_MLO, 'LeftRight': laterality_MLO, 'Label': label_MLO})
     out_CC_df.to_csv(os.path.join(png_dir,'CC', 'labels.csv'), index=False)
     out_MLO_df.to_csv(os.path.join(png_dir,'MLO', 'labels.csv'), index=False)
                 
