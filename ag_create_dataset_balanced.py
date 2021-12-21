@@ -24,7 +24,7 @@ import random
 
 IMG_SIZE = 2294
 
-
+random.seed(10)
 
 # def crop_center(img, cropx, cropy):
 #     x, y = img.shape
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     csv_df_index = list(csv_df.index)
     
     benign = [elem for elem in csv_df_index if csv_df.loc[elem]['Label']=='Benign']
-    file_name_to_pick = random.sample(benign, 203) Vedere se si può settare un seed
+    file_name_to_pick = random.sample(benign, 203)
     
     copy_index = csv_df_index.copy()
     copy_label = list(csv_df['Label']).copy()
@@ -72,7 +72,12 @@ if __name__ == "__main__":
         
         # solo per alcune salvo anche la imm3
         if file_name in file_name_to_pick:
-            rot = transforms.RandomRotation((0,5), center=(0,0)) Trovare un modo per girare con angoli negativi le immagini a dx e angoli positivi le imm a sx
+            
+            angle_range = (0, 5)
+            if csv_df.loc[file_name]['LeftRight'] == 'R':
+                angle_range = (-5, 0)
+            
+            rot = transforms.RandomRotation(angle_range, center=(0,0))
             imm_new3 = rot(imm)
             imm_new3.save(os.path.join(png_dir,'aug2_'+file_name),'PNG')
             copy_index.append('aug2_'+file_name)
