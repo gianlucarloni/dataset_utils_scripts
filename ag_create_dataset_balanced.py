@@ -21,7 +21,7 @@ from PIL import Image
 import pandas
 from torchvision import transforms
 import random
-
+from tqdm import tqdm
 IMG_SIZE = 2294
 
 random.seed(10)
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     copy_index = csv_df_index.copy()
     copy_label = list(csv_df['Label']).copy()
     
-    for file_name in benign:
+    for file_name in tqdm(benign):
     
         imm = Image.open(os.path.join(png_dir,file_name))
         a = imm.size[0]
@@ -73,11 +73,24 @@ if __name__ == "__main__":
         # solo per alcune salvo anche la imm3
         if file_name in file_name_to_pick:
             
-            angle_range = (0, 5)
+            selector = random.sample([0,1], 1)
+            angle_range = (1, 3)
+            center_of_rot = (0, 0)
             if csv_df.loc[file_name]['LeftRight'] == 'R':
-                angle_range = (-5, 0)
+                angle_range = (-3, 1)
+                if selector[0]==0:
+                    center_of_rot = (-a,b)
+                    angle_range = (1, 3)
+           
+            else:
+                if selector[0]==0:
+                    center_of_rot = (a,0)  
+                    angle_range = (-3, 1)
+                # else:
+                    
             
-            rot = transforms.RandomRotation(angle_range, center=(0,0))
+            rot = transforms.RandomRotation(angle_range, center=center_of_rot)
+
             imm_new3 = rot(imm)
             imm_new3.save(os.path.join(png_dir,'aug2_'+file_name),'PNG')
             copy_index.append('aug2_'+file_name)
