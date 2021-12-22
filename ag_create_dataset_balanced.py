@@ -26,13 +26,6 @@ IMG_SIZE = 2294
 
 random.seed(10)
 
-# def crop_center(img, cropx, cropy):
-#     x, y = img.shape
-#     startx = x //2-(cropx//2)
-#     starty = y //2-(cropy//2)    
-#     return img[startx: startx + cropx, starty: starty + cropy]
-
-
 
 if __name__ == "__main__":
     
@@ -53,7 +46,7 @@ if __name__ == "__main__":
     
     copy_index = csv_df_index.copy()
     copy_label = list(csv_df['Label']).copy()
-    
+    copy_later = list(csv_df['LeftRight']).copy()
     for file_name in tqdm(benign):
     
         imm = Image.open(os.path.join(png_dir,file_name))
@@ -70,22 +63,29 @@ if __name__ == "__main__":
         copy_index.append(new_name)
         copy_label.append('Benign')
         
+        laterality = csv_df.loc[file_name]['LeftRight']
+        
+        if laterality == 'R':
+            laterality2 = 'L'
+        else:
+            laterality2 = 'R'
+        copy_later.append(laterality2)        
         # solo per alcune salvo anche la imm3
         if file_name in file_name_to_pick:
             
             selector = random.sample([0,1], 1)
             angle_range = (1, 3)
             center_of_rot = (0, 0)
-            if csv_df.loc[file_name]['LeftRight'] == 'R':
-                angle_range = (-3, 1)
+            if  laterality == 'R':
+                angle_range = (-3, -1)
                 if selector[0]==0:
                     center_of_rot = (-a,b)
                     angle_range = (1, 3)
            
             else:
                 if selector[0]==0:
-                    center_of_rot = (a,0)  
-                    angle_range = (-3, 1)
+                    center_of_rot = (-a,b)  
+                    angle_range = (-3, -1)
                 # else:
                     
             
@@ -95,10 +95,11 @@ if __name__ == "__main__":
             imm_new3.save(os.path.join(png_dir,'aug2_'+file_name),'PNG')
             copy_index.append('aug2_'+file_name)
             copy_label.append('Benign')
+            copy_later.append(laterality)
             
-
     out_df = pandas.DataFrame(data={
         'File name':copy_index,
+        'LeftRight':copy_later,
         'Label':copy_label
         })
     out_df.to_csv(os.path.join(png_dir,'label_balanced.csv'),index=False)         
