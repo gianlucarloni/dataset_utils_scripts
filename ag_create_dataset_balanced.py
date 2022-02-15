@@ -45,6 +45,7 @@ if __name__ == "__main__":
     file_name_to_pick = random.sample(benign, 203)
     
     copy_index = csv_df_index.copy()
+    copy_basename = list(copy_index).copy()
     copy_label = list(csv_df['Label']).copy()
     copy_later = list(csv_df['LeftRight']).copy()
     for file_name in tqdm(benign):
@@ -55,14 +56,14 @@ if __name__ == "__main__":
         shift = transforms.RandomAffine(degrees=0, translate=(25/a, 25/b))
 
         imm_new = flip(imm)
-        #imm_new = shift(imm_new)
+        imm_new = shift(imm_new)
 
         new_name = 'aug_'+file_name
         imm_new.save(os.path.join(png_dir,new_name),'PNG')
         
         copy_index.append(new_name)
         copy_label.append('Benign')
-        
+        copy_basename.append(file_name)
         laterality = csv_df.loc[file_name]['LeftRight']
         
         if laterality == 'R':
@@ -96,9 +97,11 @@ if __name__ == "__main__":
             copy_index.append('aug2_'+file_name)
             copy_label.append('Benign')
             copy_later.append(laterality)
+            copy_basename.append(file_name)
             
     out_df = pandas.DataFrame(data={
         'File name':copy_index,
+        'Base name':copy_basename,
         'LeftRight':copy_later,
         'Label':copy_label
         })
