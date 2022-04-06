@@ -37,28 +37,31 @@ if not os.path.exists(output_dir):
 flip = transforms.RandomHorizontalFlip(p=1)
 # os.mkdir(os.path.join('.','datasets','train_augmented'))
 from tqdm import tqdm 
-for imname in tqdm(glob.glob(os.path.join(input_dir,'*.png'))):
-    basename = os.path.basename(imname)
-    
-    # versione uno: la esatta copia
-    shutil.copy(imname,os.path.join(output_dir, basename))
 
-    imm = PIL.Image.open(imname)
-    a = imm.size[0]
-    b = imm.size[1]
+for patient in tqdm(glob.glob(os.path.join(input_dir, '*'))):
 
-    #versione due: la flippa
-    imm_new = flip(imm)
-    imm_new.save(os.path.join(output_dir,'aug_flip_'+basename),'PNG')
+    # for imname in tqdm(glob.glob(os.path.join(input_dir,'*.png'))):
+    for imname in glob.glob(os.path.join(patient,'*.png')):
+        basename = os.path.basename(imname)
+        
+        # versione uno: la esatta copia
+        shutil.copy(imname,os.path.join(output_dir, basename))
     
-    #versione tre: la shifta
-    shift = transforms.RandomAffine(degrees=0, translate=(20/a, 20/b))
-    imm_new2 = shift(imm)
-    imm_new2.save(os.path.join(output_dir,'aug_shift_'+basename),'PNG')
+        imm = PIL.Image.open(imname)
+        a = imm.size[0]
+            
+        #versione due: la flippa
+        imm_new = flip(imm)
+        imm_new.save(os.path.join(output_dir,'aug_flip_'+basename),'PNG')
+        
+        #versione tre: la shifta
+        shift = transforms.RandomAffine(degrees=0, translate=(10/a, 0)) #TODO modificare in base al dataset: ad esempio in ADNI fai traslazione solo lungo un asse (10/a, 0)
+        imm_new2 = shift(imm)
+        imm_new2.save(os.path.join(output_dir,'aug_shift_'+basename),'PNG')
+        
+        # versione quattro: la ruota
+        rot = transforms.RandomRotation(10) #TODO
+        imm_new3 = rot(imm)
+        imm_new3.save(os.path.join(output_dir,'aug_rot_'+basename),'PNG')
     
-    # versione quattro: la ruota
-    rot = transforms.RandomRotation(5)
-    imm_new3 = rot(imm)
-    imm_new3.save(os.path.join(output_dir,'aug_rot_'+basename),'PNG')
-
 print('Done.')
