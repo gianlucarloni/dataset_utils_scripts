@@ -57,7 +57,7 @@ y = np.array(df['label'])
 
 y = np.array([0 if elem=='benign' else 1 for elem in y]) #TODO modificare con la stringa opportuna
 
-x = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=123) #reproducibility, push è 80% del training originale e valid 20%
+x = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42) #reproducibility, push è 80% del training originale e valid 20% # split primo con 123, secondo split (07/04/22) con 42
 for push_idxs, valid_idxs in x.split(X,y,groups=group):
     print('Prima iterazione completata, esco')
     break
@@ -97,10 +97,10 @@ valid_labels = y[valid_idxs]
 path_dst_push = os.path.join(dest_dir,'push')
 path_dst_valid = os.path.join(dest_dir,'valid')
 
-if not os.path.exists(path_dst_push):
-    os.makedirs(path_dst_push)
-if not os.path.exists(path_dst_valid):
-    os.makedirs(path_dst_valid)
+# if not os.path.exists(path_dst_push):
+#     os.makedirs(path_dst_push)
+# if not os.path.exists(path_dst_valid):
+#     os.makedirs(path_dst_valid)
     
 # for a in [path_dst_push, path_dst_valid]:
 #     for x in ['mass', 'calc']:
@@ -109,12 +109,19 @@ if not os.path.exists(path_dst_valid):
 #             if not os.path.exists(path):
 #                 os.makedirs(path)
 
+# for a in [path_dst_push, path_dst_valid]:
+#     for x in ['benign', 'malignant']:
+#         for y in ['mass', 'calc']:
+#             path = os.path.join(a, x, y)
+#             if not os.path.exists(path):
+#                 os.makedirs(path)
+
+#TODO 7 aprile 2022
 for a in [path_dst_push, path_dst_valid]:
     for x in ['benign', 'malignant']:
-        for y in ['mass', 'calc']:
-            path = os.path.join(a, x, y)
-            if not os.path.exists(path):
-                os.makedirs(path)
+        path = os.path.join(a, x)
+        if not os.path.exists(path):
+            os.makedirs(path)
 
 if corrupted_png_dir is not None:
     print('')
@@ -227,24 +234,32 @@ else:
     df_valid = df.loc[valid_names,('label')]
     
     for name in push_names:
+        label_name = df.at[name,'label']
         # TODO: le prossime righe sono per il task benigno vs maligno
-        name_old = name
-        splits = name.split(sep='/')
-        name = os.path.join(splits[1], splits[0], splits[2])
-        shutil.copy(os.path.join(png_dir,name_old),os.path.join(path_dst_push,name))
+        # name_old = name
+        # splits = name.split(sep='/')
+        # name = os.path.join(splits[1], splits[0], splits[2])
+        
+        #
+        shutil.copy(os.path.join(png_dir,name),os.path.join(path_dst_push,label_name,os.path.basename(name)))
            
     for name in valid_names:
-        # TODO: le prossime righe sono per il task benigno vs maligno
-        name_old = name
-        splits = name.split(sep='/')
-        name = os.path.join(splits[1], splits[0], splits[2])
-        shutil.copy(os.path.join(png_dir,name_old),os.path.join(path_dst_valid,name))
+        # # TODO: le prossime righe sono per il task benigno vs maligno
+        # name_old = name
+        # splits = name.split(sep='/')
+        # name = os.path.join(splits[1], splits[0], splits[2])
+        # shutil.copy(os.path.join(png_dir,name_old),os.path.join(path_dst_valid,name))
+        
+        #
+        label_name = df.at[name,'label']
+        shutil.copy(os.path.join(png_dir,name),os.path.join(path_dst_valid,label_name,os.path.basename(name)))
 
-if corrupted_png_dir is not None:
-    df_push.to_csv(os.path.join(path_dst_push,'labels_push.csv'),sep=',',index=False)
-    df_valid.to_csv(os.path.join(path_dst_valid,'labels_valid.csv'),sep=',',index=False)
-else:
-    df_push.to_csv(os.path.join(path_dst_push,'labels_push.csv'),sep=',',index=True)
-    df_valid.to_csv(os.path.join(path_dst_valid,'labels_valid.csv'),sep=',',index=True)
+
+# if corrupted_png_dir is not None:
+#     df_push.to_csv(os.path.join(path_dst_push,'labels_push.csv'),sep=',',index=False)
+#     df_valid.to_csv(os.path.join(path_dst_valid,'labels_valid.csv'),sep=',',index=False)
+# else:
+df_push.to_csv(os.path.join(dest_dir,'labels_push.csv'),sep=',',index=True)
+df_valid.to_csv(os.path.join(dest_dir,'labels_valid.csv'),sep=',',index=True)
 
 print('Done.')
