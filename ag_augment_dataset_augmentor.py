@@ -20,7 +20,7 @@ import PIL
 import matplotlib.pyplot as plt
 import random
 
-parse = argparse.ArgumentParser(description="Final aim: to augment original images with HORIZONTAL FLIP and PIXEL SHIFT")
+parse = argparse.ArgumentParser(description="Final aim: to augment (36x) the original images with the Augmentor library")
 parse.add_argument('input_dir', help='Path to the input directory with original PNG images to augment')
 parse.add_argument('output_dir', help='Path to the output directory for augmented PNG images',type=str)
 
@@ -93,7 +93,27 @@ p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
 p.flip_top_bottom(probability=1)
 p.process()
 del p 
+
+# #TODO 7:  hist equalization
+# print('Augm. n. 7: hist equalization')
+# p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+# p.histogram_equalisation(probability=1)
+# p.process()
+# del p 
     
+# #TODO 8:  brightness
+# print('Augm. n. 8: brightness')
+# p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+# p.random_brightness(1, 0.8, 1.2)
+# p.process()
+# del p 
+
+# #TODO 9:  contrast
+# print('Augm. n. 9: contrast')
+# p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+# p.random_contrast(1, 0.6, 1.5)
+# p.process()
+# del p 
     
     
     
