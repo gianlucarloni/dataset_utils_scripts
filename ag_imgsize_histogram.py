@@ -8,6 +8,7 @@ Created on Fri Feb  4 09:50:51 2022
 import os
 import numpy as np
 from PIL import Image
+from scipy.ndimage import zoom
 import argparse
 
 
@@ -19,14 +20,14 @@ import argparse
 
 parse = argparse.ArgumentParser(description="")
 parse.add_argument('input_dir', help='Path to the input directory with original PNG images to augment')
-parse.add_argument('-ts','--target_size',type=int,help='Target size of final squared images; default=512 (median)',default=512)
+parse.add_argument('-is','--intermediate_size',type=int,help='Target intermediate-size of small images prior to padding; default=250',default=250)
+parse.add_argument('-ts','--target_size',type=int,help='Target size of final squared images; default=500',default=500)
 args = parse.parse_args()
 
 input_dir = args.input_dir
+inter_size = args.intermediate_size
 target_size = args.target_size
-
-
-    
+   
     
 # mean_list=[]
 # std_list=[]
@@ -79,13 +80,18 @@ for root,dirs,files in os.walk(input_dir):
                     mat=np.copy(img_npy)
                     # print('Già quadrata')
                 
+                # small images upsampled to intermediate size prior to padding
+                dim = mat.shape[0]
+                if dim < inter_size:
+                    mat = zoom(mat, inter_size/dim, order=3)
+                
                 
                 mat2 = np.full((target_size,target_size),fill_value=mean)
                 # controllo se sono più piccole della target_size
-                if mat.shape[0] < target_size:
-                    delta = target_size - mat.shape[0]
+                if dim < target_size:
+                    delta = target_size - dim
                     min_idx = int(np.floor(delta/2))
-                    max_idx = min_idx + mat.shape[0]
+                    max_idx = min_idx + dim
                     mat2[min_idx:max_idx, min_idx:max_idx] = mat
                     
                 else:
