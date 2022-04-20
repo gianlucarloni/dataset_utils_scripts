@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import random
 
 parse = argparse.ArgumentParser(description="Final aim: to augment (36x) the original images with the Augmentor library")
-parse.add_argument('input_dir', help='Path to the input directory with original PNG images to augment')
-parse.add_argument('output_dir', help='Path to the output directory for augmented PNG images',type=str)
+parse.add_argument('input_dir', help='Path to the input directory with original PNG images of a specific class to augment')
+parse.add_argument('output_dir', help='Path to the output directory for the corresponding augmented PNG images',type=str)
 
 args = parse.parse_args()
 

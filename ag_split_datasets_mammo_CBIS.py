@@ -23,14 +23,13 @@ import glob
 
 
 
-parse = argparse.ArgumentParser(description="Final aim: to split whole image dataset into TEST and PUSH datasets, then push datasets in PUSH and VALIDATION. Finally, augment PUSH datasets to obtain actual TRAIN\nHere: at the end of this script we obtain three dataset folders: push, valid, test\nTo use original images only (not corrupted), do not pass the argument -c")
+parse = argparse.ArgumentParser(description="At the end of this script we obtain three dataset folders: push, valid, test.\n To use original images only (not corrupted), do not pass the argument -c")
 
-parse.add_argument('png_dir', help='Path to the input directory with original PNG images')
+parse.add_argument('png_dir', help='Path to the input directory with original PNG images (parent folder of class folders, e.g. \n '\
+                   '*dataset*, parent of *benign* and *malignant* folders')
 parse.add_argument('-c','--corrupted_png_dir', help='Path to the input directory that group differently-corrupted PNG images',type=str)
-parse.add_argument('-csv','--csv_file', help='Path to the CSV file of original images',
-                   default='/media/si-lab/63bc1baf-d08c-4db5-b271-e462f3f4444d/a_e_g/datasets/prostate/prostatex2/png_T2/png_PROSTATEx2_T2-Training_ag.csv')
-parse.add_argument('-d', '--dest_dir', help='Path to destination directory, parent folder of: test, push, valid, train datasets',
-                   default='/media/si-lab/63bc1baf-d08c-4db5-b271-e462f3f4444d/a_e_g/ProtoPNet/datasets')
+parse.add_argument('-csv','--csv_file', help='Path to the CSV file of original images')
+parse.add_argument('-d', '--dest_dir', help='Path to destination directory, parent folder of: test, push, valid, train datasets')
 
 args = parse.parse_args()
 
