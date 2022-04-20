@@ -10,6 +10,7 @@ OVVERO IL VALORE DI COLONNA SALVATO NEL FILE txt DELLA SPECIFICA CARTELLA
 
 import os
 import glob
+
 import numpy as np
 import imageio
 import pandas as pd
@@ -21,26 +22,27 @@ import shutil
 parse = argparse.ArgumentParser(description="Calculating Boundig Box to crop original dataset")
 parse.add_argument('png_dir', help='Path to the input directory with original or corrupted PNG images')
 parse.add_argument('csv_file', help='Path to the CSV file of original images')
-parse.add_argument('out_dir', help='Path to the outpu directory with cropped PNG images')
+parse.add_argument('out_dir', help='Path to the output directory with cropped PNG images')
 
 args = parse.parse_args()
 png_dir = args.png_dir
 csv_path = args.csv_file
 out_dir = args.out_dir
+
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
 
 if png_dir.endswith('/'):
     png_dir = png_dir[:-1]
+
 dir_name = os.path.dirname(png_dir)
+if os.path.basename(dir_name) == 'original':
+    shutil.copy(csv_path, os.path.join(out_dir,'labels_balanced.csv'))
 
-
-if os.path.basename(dir_name)=='original':
-    shutil.copy(csv_path,os.path.join(out_dir,'labels_balanced.csv'))
-
-
+# read the CSV
 csv_df = pd.read_csv(csv_path,sep=',', index_col='File name')
 
+# read the index of the max_column from the file
 with open(os.path.join(png_dir,'max_column.txt'),'r') as in_file:
     max_col = in_file.readline()
     
