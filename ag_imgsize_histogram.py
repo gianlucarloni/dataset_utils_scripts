@@ -82,38 +82,39 @@ def create_lists(input_dir):
 if __name__ == "__main__":
 
     parse = argparse.ArgumentParser(description="")
-    parse.add_argument('input_dir', help='Path to the input directory with original PNG images to augment')
+    parse.add_argument('input_dir', help='Path to the parent directory containing the class-directories (ex. benign and malignant)')
     args = parse.parse_args()
     
     input_dir = args.input_dir
       
     mean_list, std_list, mean, std, imgsize_list, list_H, list_W = create_lists(input_dir)  
 
-    for item in [mean_list, std_list, mean, std, imgsize_list, list_H, list_W]:
-        np.save(os.path.join(input_dir,f'{item}.npy'),item)
+    # for item in [mean_list, std_list, mean, std, imgsize_list, list_H, list_W]:
+    for item in [mean, std]:
+        np.save(os.path.join(input_dir, f'{item}.npy'),item) #TODO
 
-    plt.figure()
-    plt.hist(mean_list,bins=100)
-    plt.title(f'Mean Values \nMEDIAN: {np.round(np.median(mean_list),2)}; MEAN: {np.round(np.mean(mean_list),2)}')
-    plt.savefig(os.path.join(input_dir,'mean_values.pdf'))
+    # plt.figure()
+    # plt.hist(mean_list,bins=100)
+    # plt.title(f'Mean Values \nMEDIAN: {np.round(np.median(mean_list),2)}; MEAN: {np.round(np.mean(mean_list),2)}')
+    # plt.savefig(os.path.join(input_dir,'mean_values.pdf'))
     
-    plt.figure()
-    plt.hist(std_list,bins=100)
-    plt.title(f'Std Values \nMEDIAN: {np.round(np.median(std_list),2)}; MEAN: {np.round(np.mean(std_list),2)}')
-    plt.savefig(os.path.join(input_dir,'std_values.pdf'))
+    # plt.figure()
+    # plt.hist(std_list,bins=100)
+    # plt.title(f'Std Values \nMEDIAN: {np.round(np.median(std_list),2)}; MEAN: {np.round(np.mean(std_list),2)}')
+    # plt.savefig(os.path.join(input_dir,'std_values.pdf'))
     
     
-    plt.figure()
-    plt.hist(imgsize_list,bins=100)
-    plt.title(f'Max dimension Values \nMEDIAN: {np.round(np.median(imgsize_list),2)}; MEAN: {np.round(np.mean(imgsize_list),2)}')
-    plt.savefig(os.path.join(input_dir,'max_dimension_values.pdf'))
+    # plt.figure()
+    # plt.hist(imgsize_list,bins=100)
+    # plt.title(f'Max dimension Values \nMEDIAN: {np.round(np.median(imgsize_list),2)}; MEAN: {np.round(np.mean(imgsize_list),2)}')
+    # plt.savefig(os.path.join(input_dir,'max_dimension_values.pdf'))
     
-    plt.figure()
-    plt.hist(list_H,bins=100)
-    plt.title(f'H dimension Values \nMEDIAN: {np.round(np.median(list_H),2)}; MEAN: {np.round(np.mean(list_H),2)}')
-    plt.savefig(os.path.join(input_dir,'h_dimension_values.pdf'))
+    # plt.figure()
+    # plt.hist(list_H,bins=100)
+    # plt.title(f'H dimension Values \nMEDIAN: {np.round(np.median(list_H),2)}; MEAN: {np.round(np.mean(list_H),2)}')
+    # plt.savefig(os.path.join(input_dir,'h_dimension_values.pdf'))
     
-    plt.figure()
-    plt.hist(list_W,bins=100)
-    plt.title(f'W dimension Values \nMEDIAN: {np.round(np.median(list_W),2)}; MEAN: {np.round(np.mean(list_W),2)}')
-    plt.savefig(os.path.join(input_dir,'w_dimension_values.pdf'))
+    # plt.figure()
+    # plt.hist(list_W,bins=100)
+    # plt.title(f'W dimension Values \nMEDIAN: {np.round(np.median(list_W),2)}; MEAN: {np.round(np.mean(list_W),2)}')
+    # plt.savefig(os.path.join(input_dir,'w_dimension_values.pdf'))

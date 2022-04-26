@@ -116,7 +116,7 @@ for root,dirs,files in os.walk(input_dir):
                 # print(f'{os.path.dirname(root)}')
                 # print(f'{os.path.dirname(input_dir)}')
                 # #
-                output_dir = os.path.join(os.path.dirname(input_dir),f'push_e_valid_quadrate_Intermediate-{inter_size}_Target-{target_size}',os.path.basename(root))
+                output_dir = os.path.join(f'{input_dir}_Intermediate-{inter_size}_Target-{target_size}',os.path.basename(root)) #TODO
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
                 im_out.save(os.path.join(output_dir,file),format='PNG')
