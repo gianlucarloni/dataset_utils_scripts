@@ -5,20 +5,14 @@ Created on Wed Feb  2 16:37:59 2022
 
 @author: si-lab
 """
-from torch.nn import Sequential
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
+from torchvision import transforms
 import Augmentor
 
-import pandas as pd
+# import pandas as pd
 import argparse
 import os
 import shutil
-import numpy as np
 import glob
-import PIL
-import matplotlib.pyplot as plt
-import random
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description="Final aim: to augment (33x) the original images with the Augmentor library")
