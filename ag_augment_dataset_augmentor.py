@@ -56,12 +56,6 @@ if __name__ == "__main__":
         for i in range(2):
             imm_new2 = shift(imm_pil)
             imm_new2.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
-
-    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    p.rotate(probability=1, max_left_rotation=170, max_right_rotation=170) 
-    for i in range(10):
-        p.process()
-    del p
     
     #TODO 2: rotation
     print('Augm. n. 2.0: rotation 0 deg')
