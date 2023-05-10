@@ -11,8 +11,10 @@ import Augmentor
 # import pandas as pd
 import argparse
 import os
+import numpy as np
 import shutil
 import glob
+import PIL
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description="Final aim: to augment (33x) the original images with the Augmentor library")
@@ -37,17 +39,34 @@ if __name__ == "__main__":
     
     
     
-    flip = transforms.RandomHorizontalFlip(p=1)
+    # flip = transforms.RandomHorizontalFlip(p=1)
     
-    print('Augm. n. 1: the exact copy')
-    for imname in glob.glob(os.path.join(input_dir,'*.png')):
+    print('Augm. n. 0: the exact copy')
+    for imname in glob.glob(os.path.join(input_dir, '*.png')):
         basename = os.path.basename(imname)
         shutil.copy(imname,os.path.join(output_dir, basename))
+
+    # Shift
+    print('Augm. n. 1: rotation')
+    for img in glob.glob(os.path.join(input_dir, '*.png')):
+        imm_pil = PIL.Image.open(img)
+        imm_npy = np.array(imm_pil)
+        mean_gray = np.mean(imm_npy)
+        shift = transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), fill=mean_gray) 
+        for i in range(2):
+            imm_new2 = shift(imm_pil)
+            imm_new2.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
+
+    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    p.rotate(probability=1, max_left_rotation=170, max_right_rotation=170) 
+    for i in range(10):
+        p.process()
+    del p
     
     #TODO 2: rotation
     print('Augm. n. 2: rotation')
     p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    p.rotate(probability=1, max_left_rotation=10, max_right_rotation=10)
+    p.rotate(probability=1, max_left_rotation=170, max_right_rotation=170) 
     for i in range(10):
         p.process()
     del p
