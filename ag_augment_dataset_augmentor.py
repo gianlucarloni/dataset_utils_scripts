@@ -47,7 +47,7 @@ if __name__ == "__main__":
         shutil.copy(imname,os.path.join(output_dir, basename))
 
     # Shift
-    print('Augm. n. 1: rotation')
+    print('Augm. n. 1: shift')
     for img in glob.glob(os.path.join(input_dir, '*.png')):
         imm_pil = PIL.Image.open(img)
         imm_npy = np.array(imm_pil)
@@ -64,10 +64,19 @@ if __name__ == "__main__":
     del p
     
     #TODO 2: rotation
-    print('Augm. n. 2: rotation')
+    print('Augm. n. 2.0: rotation 0 deg')
     p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    p.rotate(probability=1, max_left_rotation=170, max_right_rotation=170) 
-    for i in range(10):
+    p.rotate(probability=1, max_left_rotation=25, max_right_rotation=25) 
+    for i in range(2):
+        p.process()
+    del p
+
+    #TODO 2: rotation
+    print('Augm. n. 2.1: rotation 180 deg')
+    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    p.flip_top_bottom(probability=1)
+    p.rotate(probability=1, max_left_rotation=25, max_right_rotation=25) 
+    for i in range(2):
         p.process()
     del p
     
