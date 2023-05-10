@@ -51,7 +51,7 @@ if __name__ == "__main__":
     for img in glob.glob(os.path.join(input_dir, '*.png')):
         imm_pil = PIL.Image.open(img)
         imm_npy = np.array(imm_pil)
-        mean_gray = np.mean(imm_npy)
+        mean_gray = int(np.mean(imm_npy))
         shift = transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), fill=mean_gray) 
         for i in range(2):
             imm_new2 = shift(imm_pil)
