@@ -49,6 +49,7 @@ if __name__ == "__main__":
     # Shift
     print('Augm. n. 1: shift')
     for img in glob.glob(os.path.join(input_dir, '*.png')):
+        basename = os.path.basename(img)
         imm_pil = PIL.Image.open(img)
         imm_npy = np.array(imm_pil)
         mean_gray = int(np.mean(imm_npy))
