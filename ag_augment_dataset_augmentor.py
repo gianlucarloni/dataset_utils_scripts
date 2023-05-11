@@ -46,7 +46,7 @@ if __name__ == "__main__":
     #     basename = os.path.basename(imname)
     #     shutil.copy(imname,os.path.join(output_dir, basename))
 
-    # Shift
+    # Exact copy, Shift, rotation
     print('Augm. n. 0, 1, 2: exact copy, shift, rotation')
     for img in glob.glob(os.path.join(input_dir, '*.png')):
         basename = os.path.basename(img)
