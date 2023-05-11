@@ -41,30 +41,38 @@ if __name__ == "__main__":
     
     # flip = transforms.RandomHorizontalFlip(p=1)
     
-    print('Augm. n. 0: the exact copy')
-    for imname in glob.glob(os.path.join(input_dir, '*.png')):
-        basename = os.path.basename(imname)
-        shutil.copy(imname,os.path.join(output_dir, basename))
+    # print('Augm. n. 0: the exact copy')
+    # for imname in glob.glob(os.path.join(input_dir, '*.png')):
+    #     basename = os.path.basename(imname)
+    #     shutil.copy(imname,os.path.join(output_dir, basename))
 
     # Shift
-    print('Augm. n. 1: shift')
+    print('Augm. n. 0, 1, 2: exact copy, shift, rotation')
     for img in glob.glob(os.path.join(input_dir, '*.png')):
         basename = os.path.basename(img)
+        shutil.copy(img,os.path.join(output_dir, basename))
         imm_pil = PIL.Image.open(img)
         imm_npy = np.array(imm_pil)
         mean_gray = int(np.mean(imm_npy))
         shift = transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), fill=mean_gray) 
+        rotate = transforms.RandomAffine(degrees=170, interpolation=transforms.InterpolationMode.BILINEAR, fill=mean_gray) 
+
         for i in range(2):
-            imm_new2 = shift(imm_pil)
-            imm_new2.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
+            imm_shifted = shift(imm_pil)
+            imm_shifted.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
+
+        for i in range(10):
+            imm_rotated = rotate(imm_pil)
+            imm_rotated.save(os.path.join(output_dir, f'aug_rot_{i}_' + basename),'PNG')
+
     
-    #TODO 2: rotation
-    print('Augm. n. 2.0: rotation 0 deg')
-    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    p.rotate(probability=1, max_left_rotation=10, max_right_rotation=10) 
-    for i in range(2):
-        p.process()
-    del p
+    # #TODO 2: rotation
+    # print('Augm. n. 2.0: rotation 0 deg')
+    # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    # p.rotate(probability=1, max_left_rotation=10, max_right_rotation=10) 
+    # for i in range(2):
+    #     p.process()
+    # del p
 
     
     #TODO 3: skew
