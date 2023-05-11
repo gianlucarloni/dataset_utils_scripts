@@ -41,69 +41,61 @@ if __name__ == "__main__":
     
     # flip = transforms.RandomHorizontalFlip(p=1)
     
-    # print('Augm. n. 0: the exact copy')
-    # for imname in glob.glob(os.path.join(input_dir, '*.png')):
-    #     basename = os.path.basename(imname)
-    #     shutil.copy(imname,os.path.join(output_dir, basename))
+    print('Augm. n. 0: the exact copy')
+    for imname in glob.glob(os.path.join(input_dir, '*.png')):
+        basename = os.path.basename(imname)
+        shutil.copy(imname,os.path.join(output_dir, basename))
 
-    # # Shift
-    # print('Augm. n. 1: shift')
-    # for img in glob.glob(os.path.join(input_dir, '*.png')):
-    #     basename = os.path.basename(img)
-    #     imm_pil = PIL.Image.open(img)
-    #     imm_npy = np.array(imm_pil)
-    #     mean_gray = int(np.mean(imm_npy))
-    #     shift = transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), fill=mean_gray) 
-    #     for i in range(2):
-    #         imm_new2 = shift(imm_pil)
-    #         imm_new2.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
+    # Shift
+    print('Augm. n. 1: shift')
+    for img in glob.glob(os.path.join(input_dir, '*.png')):
+        basename = os.path.basename(img)
+        imm_pil = PIL.Image.open(img)
+        imm_npy = np.array(imm_pil)
+        mean_gray = int(np.mean(imm_npy))
+        shift = transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), fill=mean_gray) 
+        for i in range(2):
+            imm_new2 = shift(imm_pil)
+            imm_new2.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
     
     #TODO 2: rotation
     print('Augm. n. 2.0: rotation 0 deg')
     p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    p.rotate(probability=1, max_left_rotation=25, max_right_rotation=25) 
+    p.rotate(probability=1, max_left_rotation=10, max_right_rotation=10) 
     for i in range(2):
         p.process()
     del p
 
-    # #TODO 2: rotation
-    # print('Augm. n. 2.1: rotation 180 deg')
-    # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    # p.flip_top_bottom(probability=1)
-    # p.rotate(probability=1, max_left_rotation=25, max_right_rotation=25) 
-    # for i in range(2):
-    #     p.process()
-    # del p
     
-    # #TODO 3: skew
-    # print('Augm. n. 3: skew')
-    # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    # p.skew(probability=1, magnitude=0.2)  # max 45 degrees
-    # for i in range(10):
-    #     p.process()
-    # del p
+    #TODO 3: skew
+    print('Augm. n. 3: skew')
+    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    p.skew(probability=1, magnitude=0.2)  # max 45 degrees
+    for i in range(10):
+        p.process()
+    del p
     
-    # #TODO 4:  shear
-    # print('Augm. n. 4: shear')
-    # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    # p.shear(probability=1, max_shear_left=10, max_shear_right=10)
-    # for i in range(10):
-    #     p.process()
-    # del p
+    #TODO 4:  shear
+    print('Augm. n. 4: shear')
+    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    p.shear(probability=1, max_shear_left=10, max_shear_right=10)
+    for i in range(10):
+        p.process()
+    del p
     
-    # #TODO 5:  flip Left Right
-    # print('Augm. n. 5: flip LR')
-    # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    # p.flip_left_right(probability=1)
-    # p.process()
-    # del p 
+    #TODO 5:  flip Left Right
+    print('Augm. n. 5: flip LR')
+    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    p.flip_left_right(probability=1)
+    p.process()
+    del p 
         
-    # #TODO 6:  flip Top Bottom
-    # print('Augm. n. 6: flip TB')
-    # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-    # p.flip_top_bottom(probability=1)
-    # p.process()
-    # del p 
+    #TODO 6:  flip Top Bottom
+    print('Augm. n. 6: flip TB')
+    p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+    p.flip_top_bottom(probability=1)
+    p.process()
+    del p 
     
     if deep_augment:
         #TODO 7:  hist equalization
