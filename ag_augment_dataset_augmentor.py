@@ -107,11 +107,11 @@ if __name__ == "__main__":
     
     if deep_augment:
         #TODO 7:  hist equalization
-       # print('Augm. n. 7: hist equalization')
-       # p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
-       # p.histogram_equalisation(probability=1)
-       # p.process()
-       # del p 
+        print('Augm. n. 7: hist equalization')
+        p = Augmentor.Pipeline(source_directory=input_dir, output_directory=output_dir)
+        p.histogram_equalisation(probability=1)
+        p.process()
+        del p 
             
         #TODO 8:  brightness
         print('Augm. n. 8: brightness')
