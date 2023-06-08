@@ -59,11 +59,11 @@ if __name__ == "__main__":
 
         for i in range(2):
             imm_shifted = shift(imm_pil)
-            imm_shifted.save(os.path.join(output_dir, f'aug_shift_{i}_' + basename),'PNG')
+            imm_shifted.save(os.path.join(output_dir,  f'{basename}_aug_shift_{i}.png'),'PNG')
 
         for i in range(10):
             imm_rotated = rotate(imm_pil)
-            imm_rotated.save(os.path.join(output_dir, f'aug_rot_{i}_' + basename),'PNG')
+            imm_rotated.save(os.path.join(output_dir, f'{basename}_aug_rot_{i}.png'),'PNG')
 
     
     # #TODO 2: rotation
