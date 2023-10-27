@@ -201,8 +201,8 @@ for ind, csv_path in enumerate([csv_mass_train_path, csv_mass_test_path]):
                         width = col_max - col_min
                         height = row_max - row_min
 
-                        img_width = shape_i[2]
-                        img_height = shape_i[1]
+                        img_width = shape_i[1]
+                        img_height = shape_i[0]
 
                         # normalising the coordinates for Yolo
                         col_center /= img_width
