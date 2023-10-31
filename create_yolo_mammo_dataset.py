@@ -114,7 +114,7 @@ for ind, csv_path in enumerate([csv_mass_train_path, csv_mass_test_path]):
             npy_full_im = dcm_full_im.pixel_array
 
             out_img_name = f'{full_image_dir}.png'
-            out_txt_label = f'{full_image_dir}.png'
+            out_txt_label = f'{full_image_dir}.txt'
         
             
             was_in_dataset = False
@@ -218,18 +218,18 @@ for ind, csv_path in enumerate([csv_mass_train_path, csv_mass_test_path]):
                         
                         # se è il primo record_per_patient creo il file della label e salvo
                         # l'immagine in png, altrimenti apro solo il file in append e aggiungo il nuovo bbox
-                        out_path = os.path.join(img_dir, out_img_name)
+                        out_path_img = os.path.join(img_dir, out_img_name)
                         out_path_label = os.path.join(label_dir, out_txt_label)
-                        if num_record == 1:
-                            # the structure will be dataset/train/images and dataset/train/labels (same thing for test)
+                        if os.path.exists(out_path_img):
+                            assert(os.path.exists(out_path_label))
+                            
+                            with open(out_path_label, "a") as label_file:
+                                label_file.write(f'\n0 {col_center} {row_center} {width} {height}')
+                        else:
                             with open(out_path_label, "w") as label_file:
                                 label_file.write(f'0 {col_center} {row_center} {width} {height}')
 
-                            pil_mass.save(out_path, 'PNG')
-                        else:
-                            with open(out_path_label, "a") as label_file:
-                                label_file.write(f'\n0 {col_center} {row_center} {width} {height}')
-                        
+                            pil_mass.save(out_path_img, 'PNG')
                                             
         idx += num_records_per_patient
             
