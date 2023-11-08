@@ -131,7 +131,9 @@ for ind, csv_path in enumerate([csv_mass_train_path, csv_mass_test_path]):
                 
                 crop_size = 600 #TODO
                 
-                if label == 'BENIGN' or label == 'MALIGNANT':
+                # if label == 'BENIGN' or label == 'MALIGNANT':
+                if label == 'BENIGN_WITHOUT_CALLBACK':
+
                     
                 #     if label == 'BENIGN':
                 #          output_save_dir = benign_dir
