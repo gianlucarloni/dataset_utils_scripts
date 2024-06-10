@@ -130,3 +130,6 @@ dmypy.json
 
 # Custom ignore bash script
 augment_data.sh
+
+# Custom ignore utility file
+ag_augment_tmp.py
