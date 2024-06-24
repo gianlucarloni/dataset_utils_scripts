@@ -133,3 +133,6 @@ augment_data.sh
 
 # Custom ignore utility file
 ag_augment_tmp.py
+
+# Mac files
+.DS_Store
