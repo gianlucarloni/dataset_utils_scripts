@@ -17,7 +17,7 @@ import glob
 import PIL
 
 if __name__ == "__main__":
-    parse = argparse.ArgumentParser(description="Final aim: to augment (33x) the original images with the Augmentor library")
+    parse = argparse.ArgumentParser(description="Final aim: to augment (35x) the original images with the Augmentor library")
     parse.add_argument('input_dir', 
                        help='Path to the input directory with original PNG images of a specific class to augment')
     parse.add_argument('output_dir', 
