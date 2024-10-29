@@ -98,9 +98,9 @@ if __name__ == "__main__":
     with open(args.csv) as csvfile:
         csv_reader = csv.DictReader(csvfile)
         for entry in csv_reader:
-            # Temporary
-            if "_CC_" in entry["dirname"]:
-                continue
+            # # Temporary
+            # if "_CC_" in entry["dirname"]:
+            #     continue
 
             benign = entry["pathology"].startswith(
                 "BENIGN"
