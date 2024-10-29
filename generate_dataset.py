@@ -17,20 +17,8 @@ def apply_clahe(img: Image.Image) -> Image.Image:
     """
     img_array = np.array(img)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    for idx in range(3):
-        # Per channel normalization
-        clahe_img: np.ndarray = clahe.apply(img_array[..., idx])
-        if np.amax(clahe_img) > np.amin(clahe_img):
-            # Min-max normalization
-            clahe_img = (
-                (
-                    (clahe_img - np.amin(clahe_img))
-                    / (np.amax(clahe_img) - np.amin(clahe_img))
-                )
-                * 255
-            ).astype(np.uint8)
-        img_array[..., idx] = clahe_img[..., 0]
-    return Image.fromarray(img_array)
+    clahe_img = clahe.apply(img_array)
+    return Image.fromarray(clahe_img)
 
 
 def get_mass_bbox(mass_mask: Image.Image) -> tuple[int, int, int, int]:
@@ -98,6 +86,8 @@ if __name__ == "__main__":
     with open(args.csv) as csvfile:
         csv_reader = csv.DictReader(csvfile)
         for entry in csv_reader:
+            # if "_CC_" in entry["dirname"]:
+            #     continue
             benign = entry["pathology"].startswith(
                 "BENIGN"
             )  # Includes BENIGN and BENIGN_WITHOUT_CALLBACK
@@ -110,6 +100,10 @@ if __name__ == "__main__":
             if not os.path.isfile(img_path):
                 raise ValueError(f"Could not find image {img_path}")
             img = Image.open(img_path)
+
+            # Normalize original image if necessary
+            if args.clahe:
+                img = apply_clahe(img)
 
             # Seek mass mask
             mask_path = os.path.join("png_masks", args.split, entry["dirname"] + ".png")
@@ -157,10 +151,6 @@ if __name__ == "__main__":
                 and (y_max - y_min == args.crop_size)
             )
             cropped_img = img.crop((x_min, y_min, x_max, y_max))
-
-            # Normalize original image if necessary
-            if args.clahe:
-                cropped_img = apply_clahe(cropped_img)
 
             # Save image
             output_dir = os.path.join(
