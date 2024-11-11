@@ -13,15 +13,6 @@ import shutil
 import numpy as np
 import glob
 
-# #
-# osservazione: parlando con eva 
-# TODO: dovremmo tenere conto nella suddivisione train_test_split che le immagini
-# appartenenti alla stessa lesione vadano TUTTE o nel training o nel test,
-# invece al momento noi stiamo splittando indistintamente
-# #
-
-
-
 
 parse = argparse.ArgumentParser(description="At the end of this script we obtain three dataset folders: push, valid, test.\n To use original images only (not corrupted), do not pass the argument -c")
 
