@@ -26,7 +26,7 @@ import glob
 parse = argparse.ArgumentParser(description="At the end of this script we obtain three dataset folders: push, valid, test.\n To use original images only (not corrupted), do not pass the argument -c")
 
 parse.add_argument('png_dir', help='Path to the input directory with original PNG images (parent folder of class folders, e.g. \n '\
-                   '*dataset*, parent of *benign* and *cancer* folders')
+                   '*dataset*, parent of *benign* and *malignant* folders')
 parse.add_argument('-csv','--csv_file', help='Path to the CSV file of original images')
 parse.add_argument('-d', '--dest_dir', help='Path to destination directory, parent folder of: fold0, fold1, fold2, fold3, and fold4')
 
@@ -58,7 +58,7 @@ for idx, (push_idxs, valid_idxs) in enumerate(x.split(X,y,groups=group)):
 
 #TODO 7 aprile 2022
 for fold in folds.keys():
-    for label in ['benign', 'cancer']:
+    for label in ['benign', 'malignant']:
         path = os.path.join(dest_dir, fold, label)
         if not os.path.exists(path):
             os.makedirs(path)
